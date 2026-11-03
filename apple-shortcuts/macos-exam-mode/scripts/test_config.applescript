@@ -17,7 +17,7 @@ tell application "System Events"
 end tell
 
 -- Display results
-return "Mode: " & configMode & return & Â
-	"Whitelist: " & (whitelist as text) & return & Â
-	"Blacklist: " & (blacklist as text) & return & Â
+return "Mode: " & configMode & return & ï¿½
+	"Whitelist: " & (whitelist as text) & return & ï¿½
+	"Blacklist: " & (blacklist as text) & return & ï¿½
 	"Preserve system apps: " & preserveSystemApps
