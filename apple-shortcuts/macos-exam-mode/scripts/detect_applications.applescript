@@ -11,6 +11,7 @@ tell application "System Events"
 	set configFile to property list file configPath
 	
 	set protectedBundleIDs to value of property list item "whitelist" of configFile
+	set alwaysProtectBundleIDs to value of property list item "always_protect" of configFile
 	set blacklistedBundleIDs to value of property list item "blacklist" of configFile
 	set configMode to value of property list item "mode" of configFile
 end tell
@@ -36,7 +37,9 @@ tell application "System Events"
 		end try
 		
 		-- Classify application
-		if appBundleID is in blacklistedBundleIDs then
+		if appBundleID is in alwaysProtectBundleIDs then
+			set appStatus to "PROTECTED"
+		else if appBundleID is in blacklistedBundleIDs then
 			set appStatus to "CLOSE"
 		else if appBundleID is in protectedBundleIDs then
 			set appStatus to "PROTECTED"

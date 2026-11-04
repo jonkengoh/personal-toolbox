@@ -13,6 +13,12 @@
         <string>com.apple.finder</string>
     </array>
 
+    <key>always_protect</key>
+    <array>
+        <string>com.apple.ScriptEditor2</string>
+        <string>com.apple.finder</string>
+    </array>
+
     <key>blacklist</key>
     <array>
     </array>
