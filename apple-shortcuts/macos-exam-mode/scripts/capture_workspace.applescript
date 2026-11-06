@@ -14,6 +14,7 @@ end if
 set workspaceSnapshot to {}
 
 set capturedAt to do shell script "date -u +%Y-%m-%dT%H:%M:%SZ"
+set originalFocus to do shell script "shortcuts run " & quoted form of "Exam Mode - Capture Focus"
 
 tell application "System Events"
 	set runningApps to every application process whose background only is false
@@ -36,6 +37,7 @@ tell application "System Events"
 	set parentDictionary to make new property list item with properties {kind:record}
 	set snapshotFile to make new property list file with properties {contents:parentDictionary, name:snapshotPath}
 	make new property list item at end of property list items of snapshotFile with properties {name:"capturedAt", value:capturedAt}
+	make new property list item at end of property list items of snapshotFile with properties {name:"originalFocus", value:originalFocus}
 	set applicationsArray to make new property list item at end of property list items of snapshotFile with properties {name:"runningApplications", kind:list}
 	
 	repeat with appRecord in workspaceSnapshot

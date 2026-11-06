@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>capturedAt</key>
+	<string>2026-11-04T10:25:14Z</string>
+	<key>runningApplications</key>
+	<array>
+		<dict>
+			<key>bundleID</key>
+			<string>com.utmapp.UTM</string>
+			<key>name</key>
+			<string>UTM</string>
+		</dict>
+		<dict>
+			<key>bundleID</key>
+			<string>com.apple.Safari</string>
+			<key>name</key>
+			<string>Safari</string>
+		</dict>
+		<dict>
+			<key>bundleID</key>
+			<string>com.apple.finder</string>
+			<key>name</key>
+			<string>Finder</string>
+		</dict>
+		<dict>
+			<key>bundleID</key>
+			<string>com.github.GitHubClient</string>
+			<key>name</key>
+			<string>GitHub Desktop</string>
+		</dict>
+		<dict>
+			<key>bundleID</key>
+			<string>com.microsoft.VSCode</string>
+			<key>name</key>
+			<string>Code</string>
+		</dict>
+		<dict>
+			<key>bundleID</key>
+			<string>com.openai.codex</string>
+			<key>name</key>
+			<string>ChatGPT</string>
+		</dict>
+		<dict>
+			<key>bundleID</key>
+			<string>com.apple.ScriptEditor2</string>
+			<key>name</key>
+			<string>Script Editor</string>
+		</dict>
+	</array>
+</dict>
+</plist>
