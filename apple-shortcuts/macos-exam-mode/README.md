@@ -6,6 +6,66 @@ Built primarily with **AppleScript** and integrated with **macOS Shortcuts**, th
 
 ## Features
 
+### Implemented
+
+- **Application Detection:** Identify currently running user applications.
+- **Configurable Application Rules:** Support whitelists, blacklists and protected applications.
+- **Workspace State Capture:** Record running applications and the original Focus state.
+- **Graceful Application Termination:** Request applications to quit without force termination.
+- **Focus Management:** Capture and restore the original Focus using macOS Shortcuts.
+
+### Planned
+
+- **Workspace Restoration:** Relaunch previously running applications.
+- **One-Click Automation:** Integrate the individual components into complete Start Exam Mode and Restore Workspace workflows.
+- **Complete Workflow Validation:** Test the entire examination and restoration lifecycle.
+
+### Focus Management
+
+Exam Mode uses macOS Shortcuts to manage Focus states and Do Not Disturb.
+
+#### Shortcuts
+
+The following shortcuts are used:
+
+| Shortcut | Responsibility |
+|---|---|
+| `Exam Mode - Capture Focus` | Retrieves the currently active Focus name. Returns `NONE` if no Focus is active. |
+| `Enable DnD` | Enables Do Not Disturb. |
+| `Restore Exam Mode Focus` | Restores the original Focus using the supplied Focus name. |
+
+Shortcut exports are stored in `shortcuts/` and can be imported through the macOS Shortcuts app.
+
+#### Focus State Capture
+
+During workspace capture, the active Focus is recorded in
+`state/workspace_snapshot.plist` under the root-level `originalFocus` key.
+
+Examples:
+
+- `Personal` — a named Focus was active.
+- `Work` — another named Focus was active.
+- `NONE` — no Focus was active.
+
+#### Focus Restoration
+
+`scripts/restore_focus.applescript` retrieves the saved
+`originalFocus` value and passes it to the `Restore Exam Mode Focus` shortcut.
+
+The restoration shortcut handles two cases:
+
+- Named Focus: activates the previously active Focus.
+- `NONE`: turns Do Not Disturb off.
+
+Restoration is aborted if the workspace snapshot is missing or the
+`originalFocus` value is missing or empty.
+
+#### Dependencies
+
+- macOS Shortcuts app.
+- The three shortcuts listed above must be imported.
+- Shortcut names must match the names referenced by the AppleScripts.
+
 ### Planned Features
 
 - **Strict Exam Mode:** Gracefully quit non-essential applications while preserving macOS system processes.
@@ -32,11 +92,11 @@ The utility is designed around two primary operations:
 
 ### Start Exam Mode
 
-1. Capture the currently running applications.
-2. Save the original workspace state.
-3. Identify applications protected by the configuration.
-4. Gracefully quit non-whitelisted applications.
-5. Enable Do Not Disturb.
+1. Capture the currently running applications and original Focus state.
+2. Save the workspace snapshot.
+3. Enable Do Not Disturb.
+4. Identify applications protected by the configuration.
+5. Gracefully quit non-whitelisted applications.
 6. Report the outcome.
 
 ### Restore Workspace
@@ -49,15 +109,16 @@ The utility is designed around two primary operations:
 
 ## Configuration
 
-Application rules will be maintained separately from the automation scripts.
+Application rules are maintained separately from the automation scripts in `config/apps.plist`.
 
-The intended configuration will support:
+The configuration supports:
 
 - **Whitelist:** Applications that should remain running during Exam Mode.
 - **Blacklist:** Applications explicitly designated for closure.
+- **Always Protect:** Applications that must never be targeted for closure.
 - **Strict Mode:** Applications not protected by the configuration are considered closure candidates.
 
-The initial implementation will prioritise a strict default configuration with the ability to customise application rules.
+The initial configuration uses strict mode, with Google Chrome and Finder included in the protected application rules.
 
 ## Restoration Behaviour
 
@@ -84,8 +145,8 @@ Application relaunching and window restoration are separate concerns. While prev
 ## Technology
 
 - **AppleScript:** Application detection, lifecycle management and workspace automation.
-- **macOS Shortcuts:** One-click user interface.
-- **Property Lists / Configuration Files:** Persistent application configuration and session state.
+- **macOS Shortcuts:** Focus management and user-facing automation.
+- **Property Lists:** Application configuration and persistent workspace state.
 
 Python is not required for the intended implementation.
 
