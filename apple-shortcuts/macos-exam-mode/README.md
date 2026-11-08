@@ -152,13 +152,13 @@ Python is not required for the intended implementation.
 
 ## Roadmap
 
-- [ ] Establish project structure and documentation.
-- [ ] Implement running application detection.
-- [ ] Implement configurable application filtering.
-- [ ] Implement workspace state capture.
-- [ ] Implement graceful application termination.
+- ✅ Establish project structure and documentation.
+- ✅ Implement running application detection.
+- ✅ Implement configurable application filtering.
+- ✅ Implement workspace state capture.
+- ✅ Implement graceful application termination.
+- ✅ Implement Do Not Disturb management.
 - [ ] Implement workspace restoration.
-- [ ] Implement Do Not Disturb management.
 - [ ] Integrate with macOS Shortcuts.
 - [ ] Test complete Exam Mode and restoration workflows.
 - [ ] Finalise documentation and usage instructions.
