@@ -13,10 +13,10 @@ Built primarily with **AppleScript** and integrated with **macOS Shortcuts**, th
 - **Workspace State Capture:** Record running applications and the original Focus state.
 - **Graceful Application Termination:** Request applications to quit without force termination.
 - **Focus Management:** Capture and restore the original Focus using macOS Shortcuts.
+- **Workspace Restoration:** Relaunch previously running applications and reinstate previous focus mode.
 
 ### Planned
 
-- **Workspace Restoration:** Relaunch previously running applications.
 - **One-Click Automation:** Integrate the individual components into complete Start Exam Mode and Restore Workspace workflows.
 - **Complete Workflow Validation:** Test the entire examination and restoration lifecycle.
 
@@ -158,7 +158,7 @@ Python is not required for the intended implementation.
 - ✅ Implement workspace state capture.
 - ✅ Implement graceful application termination.
 - ✅ Implement Do Not Disturb management.
-- [ ] Implement workspace restoration.
+- ✅ Implement workspace restoration.
 - [ ] Integrate with macOS Shortcuts.
 - [ ] Test complete Exam Mode and restoration workflows.
 - [ ] Finalise documentation and usage instructions.
