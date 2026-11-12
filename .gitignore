@@ -27,3 +27,6 @@ htmlcov/
 # Logs
 logs/
 *.log
+
+# macOS Exam Mode runtime state
+apple-shortcuts/macos-exam-mode/state/*.plist
