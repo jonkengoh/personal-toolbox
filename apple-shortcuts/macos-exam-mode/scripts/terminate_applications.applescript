@@ -96,15 +96,16 @@ set dialogMessage to "Exam Mode is ready to close " & (count of applicationsToCl
 try
 	set dialogResult to display dialog dialogMessage buttons {"Cancel", "Continue"} default button "Cancel" cancel button "Cancel" with icon caution
 on error number -128
-	return "Exam Mode cancelled. No applications were asked to quit."
+	return "CANCELLED: Exam Mode cancelled. No applications were asked to quit."
 end try
 
 if button returned of dialogResult is not "Continue" then
-	return "Exam Mode cancelled. No applications were asked to quit."
+	return "CANCELLED: Exam Mode cancelled. No applications were asked to quit."
 end if
 
 set liveCheckReport to {}
 set terminationReport to {}
+set terminationFailures to {}
 
 repeat with appRecord in applicationsToClose
 	set appName to appName of appRecord
@@ -123,6 +124,7 @@ repeat with appRecord in applicationsToClose
 		set lookupSucceeded to false
 		set end of liveCheckReport to appName & " | Lookup failed: " & errMessage & " (" & errNumber & ")"
 		set end of terminationReport to appName & " | Skipped - running state unknown"
+		set end of terminationFailures to appName & " | Lookup failed"
 	end try
 	
 	if lookupSucceeded then
@@ -136,6 +138,7 @@ repeat with appRecord in applicationsToClose
 			on error errMessage number errNumber
 				set quitRequestSucceeded to false
 				set end of terminationReport to appName & " | Quit request failed: " & errMessage & " (" & errNumber & ")"
+				set end of terminationFailures to appName & " | Quit request failed"
 			end try
 			
 			if quitRequestSucceeded then
@@ -157,6 +160,7 @@ repeat with appRecord in applicationsToClose
 					on error errMessage number errNumber
 						set verificationSucceeded to false
 						set end of terminationReport to appName & " | Verification failed: " & errMessage & " (" & errNumber & ")"
+						set end of terminationFailures to appName & " | Verification failed"
 						set appStillRunning to false
 					end try
 				end repeat
@@ -166,6 +170,7 @@ repeat with appRecord in applicationsToClose
 						set end of terminationReport to appName & " | Successfully closed"
 					else
 						set end of terminationReport to appName & " | Still running after timeout (" & quitTimeoutSeconds & " seconds)"
+						set end of terminationFailures to appName & " | Still running after timeout"
 					end if
 				end if
 			end if
@@ -181,4 +186,10 @@ set AppleScript's text item delimiters to linefeed
 set liveCheckText to liveCheckReport as text
 set terminationText to terminationReport as text
 
-return reportText & return & return & "=== Live Application Check ===" & return & liveCheckText & return & return & "=== Termination Report ===" & return & terminationText
+set fullReport to reportText & return & return & "=== Live Application Check ===" & return & liveCheckText & return & return & "=== Termination Report ===" & return & terminationText
+
+if (count of terminationFailures) > 0 then
+    error "Termination was incomplete. The workspace snapshot has been preserved." & return & return & fullReport
+end if
+
+return fullReport
