@@ -10,3 +10,23 @@ set validationResult to do shell script "if [ -f " & quoted form of (projectDire
 if validationResult is not "valid" then
 	error "The selected folder does not appear to be a valid macOS Exam Mode installation. Please select the macos-exam-mode project folder."
 end if
+
+-- Define local configuration paths
+set configDirectory to POSIX path of (path to application support from user domain) & "MacOS Exam Mode"
+set configPath to configDirectory & "/config.plist"
+
+-- Create configuration directory
+do shell script "mkdir -p " & quoted form of configDirectory
+
+-- Save project directory
+do shell script "/usr/bin/defaults write " & quoted form of configPath & " projectDirectory -string " & quoted form of projectDirectory
+
+-- Verify saved configuration
+set savedProjectDirectory to do shell script "/usr/bin/defaults read " & quoted form of configPath & " projectDirectory"
+
+if savedProjectDirectory is not projectDirectory then
+    error "Installation configuration could not be verified."
+end if
+
+-- Confirm successful setup
+display dialog "macOS Exam Mode has been configured successfully." & return & return & "Project location:" & return & projectDirectory buttons {"OK"} default button "OK" with icon note
