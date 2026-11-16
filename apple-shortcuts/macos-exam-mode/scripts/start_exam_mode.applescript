@@ -1,13 +1,29 @@
--- Resolve project directory
-set projectDirectory to POSIX path of (path to me)
-set projectDirectory to do shell script "dirname " & quoted form of projectDirectory
+-- Locate local installation configuration
+set configDirectory to POSIX path of (path to application support from user domain) & "MacOS Exam Mode"
+set configPath to configDirectory & "/config.plist"
+
+-- Load project directory
+try
+    set projectDirectory to do shell script "/usr/bin/defaults read " & quoted form of configPath & " projectDirectory"
+on error
+    error "macOS Exam Mode has not been configured. Please run setup_exam_mode.applescript first."
+end try
+
+-- Validate installation directory
+set installationValid to do shell script "if [ -f " & quoted form of (projectDirectory & "/scripts/start_exam_mode.applescript") & " ]; then echo yes; else echo no; fi"
+
+if installationValid is not "yes" then
+    error "The configured project directory is invalid or no longer accessible. Please run setup_exam_mode.applescript again."
+end if
 
 -- Locate scripts and state
-set stateDirectory to projectDirectory & "/../state"
+set scriptsDirectory to projectDirectory & "/scripts"
+set stateDirectory to projectDirectory & "/state"
+
 set snapshotPath to stateDirectory & "/workspace_snapshot.plist"
 
-set captureScriptPath to projectDirectory & "/capture_workspace.applescript"
-set terminationScriptPath to projectDirectory & "/terminate_applications.applescript"
+set captureScriptPath to scriptsDirectory & "/capture_workspace.applescript"
+set terminationScriptPath to scriptsDirectory & "/terminate_applications.applescript"
 
 -- Check for an existing workspace snapshot
 set snapshotExists to (do shell script "if [ -e " & quoted form of snapshotPath & " ]; then echo yes; else echo no; fi")
